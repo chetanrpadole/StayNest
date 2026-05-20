@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayNest - <%= listing.title %></title>
+</head>
+<body>
+    <h3><%= listing.title %></h3>
+
+    <div>
+        <% if (listing.image && listing.image.url) { %>
+            <img src="<%= listing.image.url %>" alt="<%= listing.title %>" style="max-width: 400px; border-radius: 8px;">
+        <% } %>
+    </div>
+
+    <ul>
+        <li><b>Description:</b> <%= listing.description %></li>
+        <li><b>Price:</b> &#8377; <%= listing.price.toLocaleString("en-IN") %> / night</li>
+        <li><b>Location:</b> <%= listing.location %></li>
+        <li><b>Country:</b> <%= listing.country %></li>
+    </ul>
+
+    <br>
+    <a href="/listings/<%= listing._id %>/edit" style="display: inline-block; padding: 5px 10px; background-color: #f0f0f0; border: 1px solid #ccc; text-decoration: none; color: black; border-radius: 4px;">Edit this Listing</a>
+    <br><br>
+    <a href="/listings">Back to All Listings</a>
+</body>
+</html>
