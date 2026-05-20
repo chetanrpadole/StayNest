@@ -1,0 +1,41 @@
+<footer class="bg-light text-dark py-4 border-top mt-auto">
+  <div class="container px-md-5">
+    <div class="row align-items-center justify-content-between text-center text-md-start">
+      <!-- Left side: Copyright & Legal -->
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <div class="d-flex flex-column flex-md-row align-items-center gap-2 gap-md-3">
+          <span class="text-secondary">&copy; <%= new Date().getFullYear() %> StayNest, Inc.</span>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-secondary text-decoration-none small hover-underline">Privacy</a>
+            <span class="text-secondary small">&middot;</span>
+            <a href="#" class="text-secondary text-decoration-none small hover-underline">Terms</a>
+            <span class="text-secondary small">&middot;</span>
+            <a href="#" class="text-secondary text-decoration-none small hover-underline">Sitemap</a>
+          </div>
+        </div>
+      </div>
+      <!-- Right side: Socials & Currency/Language -->
+      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end gap-4 align-items-center">
+        <!-- Social Icons -->
+        <div class="d-flex gap-3 fs-5">
+          <a href="#" class="text-dark opacity-75 hover-opacity-100 transition-all"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="text-dark opacity-75 hover-opacity-100 transition-all"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-dark opacity-75 hover-opacity-100 transition-all"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .transition-all {
+    transition: all 0.2s ease-in-out;
+  }
+  .hover-opacity-100:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px);
+  }
+  .hover-underline:hover {
+    text-decoration: underline !important;
+  }
+</style>

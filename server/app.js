@@ -4,12 +4,14 @@ import Listing from "./models/listing.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import methodOverride from "method-override";
+import ejsMate from "ejs-mate";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "view"));
 app.use(express.urlencoded({ extended: true }));

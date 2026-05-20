@@ -1,25 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') -%>
+<h3>All Listings</h3>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StayNest</title>
-</head>
-
-<body>
-    <h3>All Listings</h3>
-
-    <ul>
-        <% for(let listing of allListings) { %>
-            <li>
-                <a href="/listings/<%= listing._id %>">
-                    <%= listing.title %>
-                </a>
-                - ₹ <%= listing.price.toLocaleString("en-IN") %> / night
-            </li>
-            <% } %>
-    </ul>
-</body>
-
-</html>
+<ul>
+    <% for(let listing of allListings) { %>
+        <li>
+            <a href="/listings/<%= listing._id %>">
+                <%= listing.title %>
+            </a>
+            - ₹ <%= listing.price.toLocaleString("en-IN") %> / night
+        </li>
+    <% } %>
+</ul>

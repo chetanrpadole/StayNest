@@ -1,50 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StayNest - Create New Listing</title>
-</head>
-<body>
-    <h3>Create a New Listing</h3>
-    <form action="/listings" method="POST">
-        <div>
-            <label for="title">Title</label>
-            <br>
-            <input type="text" name="listing[title]" id="title" placeholder="Enter title" required>
-        </div>
+<% layout('layouts/boilerplate') -%>
+<h3>Create a New Listing</h3>
+<form action="/listings" method="POST">
+    <div>
+        <label for="title">Title</label>
         <br>
-        <div>
-            <label for="description">Description</label>
-            <br>
-            <textarea name="listing[description]" id="description" placeholder="Enter description"></textarea>
-        </div>
+        <input type="text" name="listing[title]" id="title" placeholder="Enter title" required>
+    </div>
+    <br>
+    <div>
+        <label for="description">Description</label>
         <br>
-        <div>
-            <label for="image">Image URL</label>
-            <br>
-            <input type="text" name="listing[image]" id="image" placeholder="Enter image URL">
-        </div>
+        <textarea name="listing[description]" id="description" placeholder="Enter description"></textarea>
+    </div>
+    <br>
+    <div>
+        <label for="image">Image URL</label>
         <br>
-        <div>
-            <label for="price">Price</label>
-            <br>
-            <input type="number" name="listing[price]" id="price" placeholder="Enter price" min="0">
-        </div>
+        <input type="text" name="listing[image]" id="image" placeholder="Enter image URL">
+    </div>
+    <br>
+    <div>
+        <label for="price">Price</label>
         <br>
-        <div>
-            <label for="location">Location</label>
-            <br>
-            <input type="text" name="listing[location]" id="location" placeholder="Enter location" required>
-        </div>
+        <input type="number" name="listing[price]" id="price" placeholder="Enter price" min="0">
+    </div>
+    <br>
+    <div>
+        <label for="location">Location</label>
         <br>
-        <div>
-            <label for="country">Country</label>
-            <br>
-            <input type="text" name="listing[country]" id="country" placeholder="Enter country" required>
-        </div>
+        <input type="text" name="listing[location]" id="location" placeholder="Enter location" required>
+    </div>
+    <br>
+    <div>
+        <label for="country">Country</label>
         <br>
-        <button type="submit">Add Listing</button>
-    </form>
-</body>
-</html>
+        <input type="text" name="listing[country]" id="country" placeholder="Enter country" required>
+    </div>
+    <br>
+    <button type="submit">Add Listing</button>
+</form>
