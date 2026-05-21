@@ -1,13 +1,108 @@
 <% layout('layouts/boilerplate') -%>
-<h3>All Listings</h3>
 
-<ul>
+<div class="container px-md-4 py-3">
+  <!-- Heading & Intro -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+      <h2 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Discover StayNests</h2>
+      <p class="text-secondary mb-0">Explore handpicked premium stays for your next adventure.</p>
+    </div>
+    <div>
+      <a href="/listings/new" class="btn btn-danger btn-lg px-4 rounded-pill fw-semibold shadow-sm d-inline-flex align-items-center gap-2" style="background-color: #fe424d; border-color: #fe424d;">
+        <i class="fa-solid fa-plus"></i> Host Your Place
+      </a>
+    </div>
+  </div>
+
+  <!-- Listings Grid -->
+  <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
     <% for(let listing of allListings) { %>
-        <li>
-            <a href="/listings/<%= listing._id %>">
-                <%= listing.title %>
-            </a>
-            - ₹ <%= listing.price.toLocaleString("en-IN") %> / night
-        </li>
+      <div class="col">
+        <a href="/listings/<%= listing._id %>" class="text-decoration-none">
+          <div class="card h-100 border-0 listing-card">
+            <!-- Image Section with hover effect -->
+            <div class="card-img-container position-relative overflow-hidden" style="border-radius: 16px;">
+              <% if (listing.image && listing.image.url) { %>
+                <img src="<%= listing.image.url %>" class="card-img-top listing-img" alt="<%= listing.title %>" loading="lazy">
+              <% } else { %>
+                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=600" class="card-img-top listing-img" alt="Default StayNest image" loading="lazy">
+              <% } %>
+              
+              <!-- Quick Badge Overlay -->
+              <div class="position-absolute top-0 end-0 m-3">
+                <button class="btn btn-light btn-sm rounded-circle shadow-sm border-0 d-flex align-items-center justify-content-center p-2" style="width: 32px; height: 32px;" onclick="event.preventDefault(); this.classList.toggle('liked');">
+                  <i class="fa-regular fa-heart text-danger heart-icon"></i>
+                </button>
+              </div>
+
+              <div class="position-absolute bottom-0 start-0 m-3">
+                <span class="badge bg-dark bg-opacity-75 text-white rounded-pill px-3 py-1.5 small fw-semibold">
+                  <i class="fa-solid fa-star text-warning me-1"></i> New
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body / Info -->
+            <div class="card-body px-1 py-3 text-dark">
+              <h5 class="card-title fw-bold text-truncate mb-1" style="font-size: 1.1rem;"><%= listing.title %></h5>
+              <p class="text-secondary small mb-2 d-flex align-items-center gap-1">
+                <i class="fa-solid fa-location-dot text-danger" style="font-size: 0.85rem;"></i>
+                <%= listing.location %>, <%= listing.country %>
+              </p>
+              <p class="card-text fw-bold mb-0">
+                <span class="fs-5 text-dark">₹<%= listing.price.toLocaleString("en-IN") %></span>
+                <span class="text-secondary fw-normal" style="font-size: 0.9rem;"> / night</span>
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
     <% } %>
-</ul>
+  </div>
+</div>
+
+<style>
+  /* Custom Elegant Styles for Listing Cards */
+  .listing-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background-color: transparent;
+  }
+  
+  .listing-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card-img-container {
+    aspect-ratio: 4 / 3;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .listing-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .listing-card:hover .listing-img {
+    transform: scale(1.06);
+  }
+
+  /* Heart click animation styling */
+  .heart-icon {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .liked .heart-icon {
+    font-weight: 900; /* FontAwesome solid style */
+    color: #fe424d !important;
+  }
+  
+  .liked {
+    background-color: #fe424d !important;
+  }
+  
+  .liked .heart-icon {
+    color: white !important;
+  }
+</style>
