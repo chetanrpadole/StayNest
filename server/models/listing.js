@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Review from "./review.js";
 
 const Schema = mongoose.Schema;
 
@@ -37,6 +38,20 @@ const listingSchema = new Schema({
         type: String,
         required: true,
     },
+
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review",
+        },
+    ],
+});
+
+// Cascade delete: when a listing is deleted, remove all its reviews
+listingSchema.post("findOneAndDelete", async (listing) => {
+    if (listing) {
+        await Review.deleteMany({ _id: { $in: listing.reviews } });
+    }
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

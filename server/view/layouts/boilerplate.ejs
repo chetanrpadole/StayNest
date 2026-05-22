@@ -4,10 +4,360 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StayNest</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+      /* ===== Global ===== */
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      /* ===== Show Listing Card ===== */
+      .show-listing-card {
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        transition: box-shadow 0.3s ease;
+      }
+      .show-listing-card:hover {
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+      }
+      .show-img-wrapper {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+      }
+      .show-listing-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .show-listing-card:hover .show-listing-img {
+        transform: scale(1.03);
+      }
+      .show-listing-body {
+        padding: 28px 28px 24px;
+      }
+      .show-listing-title {
+        font-weight: 800;
+        font-size: 1.75rem;
+        color: #1a1a2e;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+      }
+      .show-listing-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .show-meta-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        background: #f0f0f5;
+        color: #555;
+      }
+      .show-meta-badge i {
+        color: #fe424d;
+        font-size: 0.8rem;
+      }
+      .show-price-badge {
+        background: linear-gradient(135deg, #fff0f1, #ffe4e6);
+        color: #e11d48;
+        font-weight: 700;
+      }
+      .show-listing-desc {
+        color: #555;
+        line-height: 1.7;
+        font-size: 0.95rem;
+        margin-bottom: 24px;
+      }
+      .show-action-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .btn-show-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .btn-show-edit {
+        background: #eef2ff;
+        color: #4f46e5;
+      }
+      .btn-show-edit:hover {
+        background: #4f46e5;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+      }
+      .btn-show-delete {
+        background: #fff1f2;
+        color: #e11d48;
+      }
+      .btn-show-delete:hover {
+        background: #e11d48;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+      }
+      .btn-show-back {
+        background: #f0f0f5;
+        color: #555;
+      }
+      .btn-show-back:hover {
+        background: #1a1a2e;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(26, 26, 46, 0.2);
+      }
+
+      /* ===== Review Form Card ===== */
+      .review-form-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        margin-bottom: 24px;
+        border: 1px solid rgba(0,0,0,0.04);
+      }
+      .review-form-title {
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: #1a1a2e;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .review-form-title i {
+        color: #fe424d;
+      }
+      .review-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #444;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .review-textarea {
+        border: 2px solid #e8e8ef;
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 0.9rem;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        resize: vertical;
+      }
+      .review-textarea:focus {
+        border-color: #fe424d;
+        box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
+        outline: none;
+      }
+
+      /* ===== Star Rating (CSS-only interactive) ===== */
+      .star-rating-field {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        gap: 4px;
+        border: none;
+        padding: 0;
+        margin: 0;
+      }
+      .star-rating-field input {
+        display: none;
+      }
+      .star-rating-field label {
+        cursor: pointer;
+        font-size: 1.6rem;
+        color: #d1d5db;
+        transition: color 0.15s ease, transform 0.15s ease;
+      }
+      .star-rating-field label:hover,
+      .star-rating-field label:hover ~ label,
+      .star-rating-field input:checked ~ label {
+        color: #f59e0b;
+      }
+      .star-rating-field label:hover {
+        transform: scale(1.2);
+      }
+
+      /* ===== Submit Button ===== */
+      .btn-submit-review {
+        width: 100%;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #fff;
+        background: linear-gradient(135deg, #fe424d, #e91e63);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .btn-submit-review:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(254, 66, 77, 0.35);
+      }
+      .btn-submit-review:active {
+        transform: translateY(0);
+      }
+
+      /* ===== Reviews Section ===== */
+      .reviews-section {
+        margin-top: 0;
+      }
+      .reviews-section-title {
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: #1a1a2e;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .reviews-section-title i {
+        color: #4f46e5;
+      }
+      .reviews-count-badge {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 50px;
+      }
+
+      /* ===== Individual Review Card ===== */
+      .review-card {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 14px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        transition: all 0.25s ease;
+        position: relative;
+      }
+      .review-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        border-color: rgba(79, 70, 229, 0.15);
+      }
+      .review-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .review-stars {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .review-star-filled {
+        color: #f59e0b;
+        font-size: 0.9rem;
+      }
+      .review-star-empty {
+        color: #e0e0e0;
+        font-size: 0.9rem;
+      }
+      .review-rating-text {
+        margin-left: 8px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #1a1a2e;
+        background: #fef3c7;
+        padding: 2px 8px;
+        border-radius: 6px;
+      }
+      .review-comment {
+        color: #444;
+        font-size: 0.92rem;
+        line-height: 1.65;
+        margin-bottom: 12px;
+      }
+      .review-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .review-date {
+        font-size: 0.78rem;
+        color: #999;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* ===== Delete Review Button ===== */
+      .btn-delete-review {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background: #f9fafb;
+        color: #aaa;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+      }
+      .btn-delete-review:hover {
+        background: #fee2e2;
+        color: #e11d48;
+        transform: scale(1.1);
+      }
+
+      /* ===== No Reviews Placeholder ===== */
+      .no-reviews-card {
+        background: #ffffff;
+        border: 2px dashed #e0e0e8;
+        border-radius: 16px;
+        padding: 40px 20px;
+        text-align: center;
+      }
+      .no-reviews-icon {
+        font-size: 2.5rem;
+        color: #c7c7d4;
+        margin-bottom: 12px;
+      }
+      .no-reviews-text {
+        color: #888;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+    </style>
 </head>
 <body class="d-flex flex-column vh-100">
     <%- include("../includes/navbar.ejs") %>
@@ -19,3 +369,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
+

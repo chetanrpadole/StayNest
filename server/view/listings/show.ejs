@@ -1,20 +1,120 @@
 <% layout('layouts/boilerplate') -%>
-<h3><%= listing.title %></h3>
 
-<div>
-    <% if (listing.image && listing.image.url) { %>
-        <img src="<%= listing.image.url %>" alt="<%= listing.title %>" style="max-width: 400px; border-radius: 8px;">
-    <% } %>
+<div class="container py-4">
+  <div class="row g-4">
+    <!-- Left Column: Listing Details -->
+    <div class="col-lg-7">
+      <div class="show-listing-card">
+        <% if (listing.image && listing.image.url) { %>
+          <div class="show-img-wrapper">
+            <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="show-listing-img">
+          </div>
+        <% } %>
+        <div class="show-listing-body">
+          <h2 class="show-listing-title"><%= listing.title %></h2>
+          <div class="show-listing-meta">
+            <span class="show-meta-badge">
+              <i class="fa-solid fa-location-dot"></i>
+              <%= listing.location %>, <%= listing.country %>
+            </span>
+            <span class="show-meta-badge show-price-badge">
+              <i class="fa-solid fa-indian-rupee-sign"></i>
+              <%= listing.price.toLocaleString("en-IN") %> / night
+            </span>
+          </div>
+          <p class="show-listing-desc"><%= listing.description %></p>
+
+          <div class="show-action-btns">
+            <a href="/listings/<%= listing._id %>/edit" class="btn-show-action btn-show-edit">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </a>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
+              <button class="btn-show-action btn-show-delete" type="submit">
+                <i class="fa-solid fa-trash-can"></i> Delete
+              </button>
+            </form>
+            <a href="/listings" class="btn-show-action btn-show-back">
+              <i class="fa-solid fa-arrow-left"></i> All Listings
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Reviews -->
+    <div class="col-lg-5">
+      <!-- Leave a Review Form -->
+      <div class="review-form-card">
+        <h4 class="review-form-title">
+          <i class="fa-solid fa-feather-pointed"></i> Leave a Review
+        </h4>
+        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
+          <!-- Star Rating -->
+          <div class="mb-3">
+            <label class="form-label review-label">Rating</label>
+            <fieldset class="star-rating-field">
+              <% for (let i = 5; i >= 1; i--) { %>
+                <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" <%= i === 5 ? 'required' : '' %>>
+                <label for="star<%= i %>" title="<%= i %> star<%= i > 1 ? 's' : '' %>">
+                  <i class="fa-solid fa-star"></i>
+                </label>
+              <% } %>
+            </fieldset>
+          </div>
+          <!-- Comment -->
+          <div class="mb-3">
+            <label for="comment" class="form-label review-label">Comment</label>
+            <textarea class="form-control review-textarea" id="comment" name="review[comment]" rows="3" placeholder="Share your experience..." required></textarea>
+          </div>
+          <button type="submit" class="btn-submit-review">
+            <i class="fa-solid fa-paper-plane"></i> Submit Review
+          </button>
+        </form>
+      </div>
+
+      <!-- Reviews List -->
+      <div class="reviews-section">
+        <h4 class="reviews-section-title">
+          <i class="fa-solid fa-comments"></i> Reviews
+          <span class="reviews-count-badge"><%= listing.reviews.length %></span>
+        </h4>
+
+        <% if (listing.reviews.length > 0) { %>
+          <% for (let review of listing.reviews) { %>
+            <div class="review-card">
+              <div class="review-card-header">
+                <div class="review-stars">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <% if (i <= review.rating) { %>
+                      <i class="fa-solid fa-star review-star-filled"></i>
+                    <% } else { %>
+                      <i class="fa-regular fa-star review-star-empty"></i>
+                    <% } %>
+                  <% } %>
+                  <span class="review-rating-text"><%= review.rating %>.0</span>
+                </div>
+                <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-inline">
+                  <button type="submit" class="btn-delete-review" title="Delete review">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </form>
+              </div>
+              <p class="review-comment"><%= review.comment %></p>
+              <div class="review-card-footer">
+                <span class="review-date">
+                  <i class="fa-regular fa-clock"></i>
+                  <%= review.createdAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                </span>
+              </div>
+            </div>
+          <% } %>
+        <% } else { %>
+          <div class="no-reviews-card">
+            <i class="fa-regular fa-comment-dots no-reviews-icon"></i>
+            <p class="no-reviews-text">No reviews yet. Be the first to share your experience!</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
 </div>
-
-<ul>
-    <li><b>Description:</b> <%= listing.description %></li>
-    <li><b>Price:</b> &#8377; <%= listing.price.toLocaleString("en-IN") %> / night</li>
-    <li><b>Location:</b> <%= listing.location %></li>
-    <li><b>Country:</b> <%= listing.country %></li>
-</ul>
-
-<br>
-<a href="/listings/<%= listing._id %>/edit" style="display: inline-block; padding: 5px 10px; background-color: #f0f0f0; border: 1px solid #ccc; text-decoration: none; color: black; border-radius: 4px;">Edit this Listing</a>
-<br><br>
-<a href="/listings">Back to All Listings</a>
