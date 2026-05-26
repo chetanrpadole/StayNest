@@ -12,6 +12,9 @@
         <% } %>
         <div class="show-listing-body">
           <h2 class="show-listing-title"><%= listing.title %></h2>
+          <p class="show-listing-owner text-muted mb-3">
+            <i class="fa-solid fa-user-tie me-1"></i> Owned by <i><%= listing.owner ? listing.owner.username : "Anonymous" %></i>
+          </p>
           <div class="show-listing-meta">
             <span class="show-meta-badge">
               <i class="fa-solid fa-location-dot"></i>
@@ -25,14 +28,16 @@
           <p class="show-listing-desc"><%= listing.description %></p>
 
           <div class="show-action-btns">
-            <a href="/listings/<%= listing._id %>/edit" class="btn-show-action btn-show-edit">
-              <i class="fa-solid fa-pen-to-square"></i> Edit
-            </a>
-            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
-              <button class="btn-show-action btn-show-delete" type="submit">
-                <i class="fa-solid fa-trash-can"></i> Delete
-              </button>
-            </form>
+            <% if (currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
+              <a href="/listings/<%= listing._id %>/edit" class="btn-show-action btn-show-edit">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+              </a>
+              <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
+                <button class="btn-show-action btn-show-delete" type="submit">
+                  <i class="fa-solid fa-trash-can"></i> Delete
+                </button>
+              </form>
+            <% } %>
             <a href="/listings" class="btn-show-action btn-show-back">
               <i class="fa-solid fa-arrow-left"></i> All Listings
             </a>
@@ -44,33 +49,44 @@
     <!-- Right Column: Reviews -->
     <div class="col-lg-5">
       <!-- Leave a Review Form -->
-      <div class="review-form-card">
-        <h4 class="review-form-title">
-          <i class="fa-solid fa-feather-pointed"></i> Leave a Review
-        </h4>
-        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
-          <!-- Star Rating -->
-          <div class="mb-3">
-            <label class="form-label review-label">Rating</label>
-            <fieldset class="star-rating-field">
-              <% for (let i = 5; i >= 1; i--) { %>
-                <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" <%= i === 5 ? 'required' : '' %>>
-                <label for="star<%= i %>" title="<%= i %> star<%= i > 1 ? 's' : '' %>">
-                  <i class="fa-solid fa-star"></i>
-                </label>
-              <% } %>
-            </fieldset>
-          </div>
-          <!-- Comment -->
-          <div class="mb-3">
-            <label for="comment" class="form-label review-label">Comment</label>
-            <textarea class="form-control review-textarea" id="comment" name="review[comment]" rows="3" placeholder="Share your experience..." required></textarea>
-          </div>
-          <button type="submit" class="btn-submit-review">
-            <i class="fa-solid fa-paper-plane"></i> Submit Review
-          </button>
-        </form>
-      </div>
+      <% if (currUser) { %>
+        <div class="review-form-card">
+          <h4 class="review-form-title">
+            <i class="fa-solid fa-feather-pointed"></i> Leave a Review
+          </h4>
+          <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
+            <!-- Star Rating -->
+            <div class="mb-3">
+              <label class="form-label review-label">Rating</label>
+              <fieldset class="star-rating-field">
+                <% for (let i = 5; i >= 1; i--) { %>
+                  <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" <%= i === 5 ? 'required' : '' %>>
+                  <label for="star<%= i %>" title="<%= i %> star<%= i > 1 ? 's' : '' %>">
+                    <i class="fa-solid fa-star"></i>
+                  </label>
+                <% } %>
+              </fieldset>
+            </div>
+            <!-- Comment -->
+            <div class="mb-3">
+              <label for="comment" class="form-label review-label">Comment</label>
+              <textarea class="form-control review-textarea" id="comment" name="review[comment]" rows="3" placeholder="Share your experience..." required></textarea>
+            </div>
+            <button type="submit" class="btn-submit-review">
+              <i class="fa-solid fa-paper-plane"></i> Submit Review
+            </button>
+          </form>
+        </div>
+      <% } else { %>
+        <div class="review-form-card p-4 text-center">
+          <i class="fa-solid fa-user-lock mb-2 fs-3 text-muted"></i>
+          <h5 class="fw-bold mb-1">Join the Discussion</h5>
+          <p class="text-muted small mb-3">You must be logged in to post a review.</p>
+          <a href="/login" class="btn-show-action btn-show-edit d-inline-block px-4 py-2 w-auto" style="border-radius: 20px;">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+          </a>
+        </div>
+      <% } %>
 
       <!-- Reviews List -->
       <div class="reviews-section">
@@ -93,16 +109,22 @@
                   <% } %>
                   <span class="review-rating-text"><%= review.rating %>.0</span>
                 </div>
-                <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-inline">
-                  <button type="submit" class="btn-delete-review" title="Delete review">
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
-                </form>
+                <% if (currUser && review.author && review.author._id.equals(currUser._id)) { %>
+                  <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-inline">
+                    <button type="submit" class="btn-delete-review" title="Delete review">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </form>
+                <% } %>
               </div>
               <p class="review-comment"><%= review.comment %></p>
               <div class="review-card-footer">
+                <span class="review-author me-3">
+                  <i class="fa-solid fa-circle-user me-1"></i>
+                  @<%= review.author ? review.author.username : "anonymous" %>
+                </span>
                 <span class="review-date">
-                  <i class="fa-regular fa-clock"></i>
+                  <i class="fa-regular fa-clock me-1"></i>
                   <%= review.createdAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }) %>
                 </span>
               </div>

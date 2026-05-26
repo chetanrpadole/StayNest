@@ -4,6 +4,7 @@ import Review from "../models/review.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import ExpressError from "../utils/ExpressErrors.js";
 import { reviewSchema } from "../schema.js";
+import { isLoggedIn, isReviewAuthor } from "../middleware.js";
 
 const router = express.Router({ mergeParams: true });
 
@@ -19,9 +20,10 @@ const validateReview = (req, res, next) => {
 };
 
 // Reviews — Create Route
-router.post("/", validateReview, wrapAsync(async (req, res) => {
+router.post("/", isLoggedIn, validateReview, wrapAsync(async (req, res) => {
   let listing = await Listing.findById(req.params.id);
   let newReview = new Review(req.body.review);
+  newReview.author = req.user._id;
   
   listing.reviews.push(newReview);
   
@@ -32,7 +34,7 @@ router.post("/", validateReview, wrapAsync(async (req, res) => {
 }));
 
 // Reviews — Delete Route
-router.delete("/:reviewId", wrapAsync(async (req, res) => {
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
   let { id, reviewId } = req.params;
   
   await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });

@@ -39,6 +39,11 @@ const listingSchema = new Schema({
         required: true,
     },
 
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
+
     reviews: [
         {
             type: Schema.Types.ObjectId,

@@ -3,7 +3,7 @@ import Listing from "../models/listing.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import ExpressError from "../utils/ExpressErrors.js";
 import { listingSchema } from "../schema.js";
-import { isLoggedIn } from "../middleware.js";
+import { isLoggedIn, isOwner } from "../middleware.js";
 
 const router = express.Router();
 
@@ -30,6 +30,7 @@ router.route("/")
     delete listingData.image; // Prevent cast error since schema expects an object
 
     let newListing = new Listing(listingData);
+    newListing.owner = req.user._id;
     
     if (imageUrl) {
       newListing.image = { url: imageUrl, filename: "listingimage" };
@@ -51,14 +52,21 @@ router.get("/new", isLoggedIn, (req, res) => {
 router.route("/:id")
   .get(wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id)
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate("owner");
     if (!listing) {
       req.flash("error", "Listing you requested for does not exist!");
       return res.redirect("/listings");
     }
     res.render("listings/show.ejs", { listing });
   }))
-  .put(validateListing, wrapAsync(async (req, res) => {
+  .put(isLoggedIn, isOwner, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listingData = { ...req.body.listing };
     let imageUrl = listingData.image;
@@ -73,7 +81,7 @@ router.route("/:id")
     req.flash("success", "Listing updated successfully!");
     res.redirect(`/listings/${id}`);
   }))
-  .delete(wrapAsync(async (req, res) => {
+  .delete(isLoggedIn, isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success", "Listing deleted successfully!");
@@ -81,7 +89,7 @@ router.route("/:id")
   }));
 
 // Listings — Edit Route (Form)
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
   if (!listing) {
