@@ -10,6 +10,7 @@ export const isLoggedIn = (req, res, next) => {
 export const saveRedirectUrl = (req, res, next) => {
   if (req.session.redirectUrl) {
     res.locals.redirectUrl = req.session.redirectUrl;
+    delete req.session.redirectUrl; // Clean up the session
   }
   next();
 };
