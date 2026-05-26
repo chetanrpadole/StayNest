@@ -1,0 +1,61 @@
+<% if (success && success.length) { %>
+  <div class="alert alert-success alert-dismissible fade show col-md-8 offset-md-2 mt-3 custom-alert" role="alert">
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-circle-check fs-5 alert-icon"></i>
+      <div class="alert-message"><%= success %></div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (error && error.length) { %>
+  <div class="alert alert-danger alert-dismissible fade show col-md-8 offset-md-2 mt-3 custom-alert" role="alert">
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-circle-exclamation fs-5 alert-icon"></i>
+      <div class="alert-message"><%= error %></div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<style>
+  .custom-alert {
+    border: none;
+    border-radius: 16px;
+    padding: 16px 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .alert-success.custom-alert {
+    background: linear-gradient(135deg, rgba(236, 253, 245, 0.95), rgba(209, 250, 229, 0.95));
+    border-left: 5px solid #10b981;
+    color: #065f46;
+  }
+  
+  .alert-success.custom-alert .alert-icon {
+    color: #10b981;
+  }
+
+  .alert-danger.custom-alert {
+    background: linear-gradient(135deg, rgba(254, 242, 242, 0.95), rgba(254, 226, 226, 0.95));
+    border-left: 5px solid #f43f5e;
+    color: #991b1b;
+  }
+  
+  .alert-danger.custom-alert .alert-icon {
+    color: #f43f5e;
+  }
+
+  .alert-message {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.2px;
+  }
+
+  .custom-alert .btn-close {
+    padding: 20px;
+    box-shadow: none;
+  }
+</style>
