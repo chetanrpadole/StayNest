@@ -6,25 +6,20 @@ import * as userController from "../controller/users.js";
 
 const router = express.Router();
 
-// GET /signup — render signup form
-router.get("/signup", userController.renderSignupForm);
+router.route("/signup")
+  .get(userController.renderSignupForm)
+  .post(wrapAsync(userController.signup));
 
-// POST /signup — register a new user
-router.post("/signup", wrapAsync(userController.signup));
-
-// GET /login — render login form
-router.get("/login", userController.renderLoginForm);
-
-// POST /login — authenticate user
-router.post(
-  "/login",
-  saveRedirectUrl,
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true,
-  }),
-  userController.login
-);
+router.route("/login")
+  .get(userController.renderLoginForm)
+  .post(
+    saveRedirectUrl,
+    passport.authenticate("local", {
+      failureRedirect: "/login",
+      failureFlash: true,
+    }),
+    userController.login
+  );
 
 // GET /logout — log out user
 router.get("/logout", userController.logout);

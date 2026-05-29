@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+import { storage } from "../cloudConfig.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import ExpressError from "../utils/ExpressErrors.js";
 import { listingSchema } from "../schema.js";
@@ -6,6 +8,7 @@ import { isLoggedIn, isOwner } from "../middleware.js";
 import * as listingController from "../controller/listing.js";
 
 const router = express.Router();
+const upload = multer({ storage });
 
 // Joi validation middleware
 const validateListing = (req, res, next) => {
@@ -21,7 +24,7 @@ const validateListing = (req, res, next) => {
 // Listings — Index Route & Create Route
 router.route("/")
   .get(wrapAsync(listingController.index))
-  .post(isLoggedIn, validateListing, wrapAsync(listingController.createListing));
+  .post(isLoggedIn, upload.single("listing[image]"), validateListing, wrapAsync(listingController.createListing));
 
 // Listings — New Route (Form)
 router.get("/new", isLoggedIn, listingController.renderNewForm);
@@ -29,7 +32,7 @@ router.get("/new", isLoggedIn, listingController.renderNewForm);
 // Listings — Show Route, Update Route & Delete Route
 router.route("/:id")
   .get(wrapAsync(listingController.showListing))
-  .put(isLoggedIn, isOwner, validateListing, wrapAsync(listingController.updateListing))
+  .put(isLoggedIn, isOwner, upload.single("listing[image]"), validateListing, wrapAsync(listingController.updateListing))
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
 // Listings — Edit Route (Form)

@@ -27,17 +27,15 @@ export const showListing = async (req, res) => {
 };
 
 export const createListing = async (req, res) => {
-  let listingData = { ...req.body.listing };
-  let imageUrl = listingData.image;
-  delete listingData.image; // Prevent cast error since schema expects an object
-
-  let newListing = new Listing(listingData);
+  let newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
-  
-  if (imageUrl) {
-    newListing.image = { url: imageUrl, filename: "listingimage" };
-  } else {
-    newListing.image = undefined; // Trigger default
+
+  // If an image file was uploaded via multer/Cloudinary
+  if (req.file) {
+    newListing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
   }
 
   await newListing.save();
@@ -57,14 +55,15 @@ export const renderEditForm = async (req, res) => {
 
 export const updateListing = async (req, res) => {
   let { id } = req.params;
-  let listingData = { ...req.body.listing };
-  let imageUrl = listingData.image;
-  delete listingData.image; 
+  const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
-  const updatedListing = await Listing.findByIdAndUpdate(id, listingData);
-  if (imageUrl) {
-    updatedListing.image = { url: imageUrl, filename: "listingimage" };
-    await updatedListing.save();
+  // If a new image file was uploaded, update the image field
+  if (req.file) {
+    listing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+    await listing.save();
   }
 
   req.flash("success", "Listing updated successfully!");

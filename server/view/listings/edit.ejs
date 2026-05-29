@@ -3,7 +3,7 @@
 <div class="row mt-3">
   <div class="col-8 offset-2">
     <h3>Edit Listing</h3>
-    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" name="listing[title]" id="title" class="form-control" value="<%= listing.title %>" required>
@@ -19,9 +19,12 @@
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label">Image Link</label>
-        <input type="text" name="listing[image]" id="image" class="form-control" value="<%= listing.image && listing.image.url ? listing.image.url : '' %>">
-        <div class="valid-feedback">Image link is optional.</div>
+        <% if (listing.image && listing.image.url) { %>
+          <img src="<%= listing.image.url %>" alt="Current listing image" class="img-fluid rounded mb-2" style="max-height: 200px; object-fit: cover;">
+        <% } %>
+        <label for="image" class="form-label">Upload New Image</label>
+        <input type="file" name="listing[image]" id="image" class="form-control">
+        <div class="valid-feedback">Image is optional. Leave blank to keep the current image.</div>
       </div>
 
       <div class="row">
