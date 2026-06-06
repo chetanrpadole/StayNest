@@ -14,6 +14,74 @@
     </div>
   </div>
 
+  <!-- Filters & Tax Toggle -->
+  <div class="d-flex flex-column flex-xl-row align-items-xl-center justify-content-between mb-4 gap-3">
+    <!-- Filters Wrapper -->
+    <div class="filters-container flex-grow-1 overflow-auto pe-xl-3" style="scrollbar-width: none; -ms-overflow-style: none;">
+      <div class="d-flex gap-4" style="min-width: max-content;">
+        
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75 active">
+          <i class="fa-solid fa-fire fs-4 mb-1"></i>
+          <span class="small fw-semibold">Trending</span>
+        </div>
+        
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-bed fs-4 mb-1"></i>
+          <span class="small fw-semibold">Rooms</span>
+        </div>
+        
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-mountain-city fs-4 mb-1"></i>
+          <span class="small fw-semibold">Iconic Cities</span>
+        </div>
+        
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-brands fa-fort-awesome fs-4 mb-1"></i>
+          <span class="small fw-semibold">Castles</span>
+        </div>
+
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-person-swimming fs-4 mb-1"></i>
+          <span class="small fw-semibold">Amazing Pools</span>
+        </div>
+        
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-campground fs-4 mb-1"></i>
+          <span class="small fw-semibold">Camping</span>
+        </div>
+
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-tractor fs-4 mb-1"></i>
+          <span class="small fw-semibold">Farms</span>
+        </div>
+
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-regular fa-snowflake fs-4 mb-1"></i>
+          <span class="small fw-semibold">Arctic</span>
+        </div>
+
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-igloo fs-4 mb-1"></i>
+          <span class="small fw-semibold">Domes</span>
+        </div>
+        
+        <div class="filter-icon d-flex flex-column align-items-center opacity-75">
+          <i class="fa-solid fa-ship fs-4 mb-1"></i>
+          <span class="small fw-semibold">Boats</span>
+        </div>
+
+      </div>
+    </div>
+    
+    <!-- Tax Toggle -->
+    <div class="tax-toggle-box border rounded-pill px-4 py-2 d-flex align-items-center shadow-sm flex-shrink-0" style="background-color: #f8f9fa;">
+      <div class="form-check form-switch m-0 d-flex align-items-center gap-2">
+        <input class="form-check-input fs-5 m-0" type="checkbox" role="switch" id="taxSwitch" style="cursor: pointer;">
+        <label class="form-check-label fw-semibold small mb-0" for="taxSwitch" style="cursor: pointer; padding-top: 2px;">Display total after taxes</label>
+      </div>
+    </div>
+  </div>
+
   <!-- Listings Grid -->
   <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
     <% for(let listing of allListings) { %>
@@ -52,6 +120,7 @@
               <p class="card-text fw-bold mb-0">
                 <span class="fs-5 text-dark">₹<%= listing.price.toLocaleString("en-IN") %></span>
                 <span class="text-secondary fw-normal" style="font-size: 0.9rem;"> / night</span>
+                <span class="tax-info text-muted small ms-1" style="display: none;"><i class="text-danger">+18% GST</i></span>
               </p>
             </div>
           </div>
@@ -63,6 +132,30 @@
 
 <style>
   /* Custom Elegant Styles for Listing Cards */
+  .filters-container::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-icon {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  .filter-icon:hover {
+    opacity: 1 !important;
+    transform: scale(1.05);
+  }
+  .filter-icon.active {
+    opacity: 1 !important;
+    border-bottom: 2px solid #222;
+    padding-bottom: 4px;
+    margin-bottom: -6px;
+  }
+  .tax-toggle-box {
+    transition: box-shadow 0.2s;
+  }
+  .tax-toggle-box:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  }
+
   .listing-card {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     background-color: transparent;
@@ -106,3 +199,21 @@
     color: white !important;
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const taxSwitch = document.getElementById("taxSwitch");
+    if (taxSwitch) {
+      taxSwitch.addEventListener("change", function() {
+        const taxInfos = document.querySelectorAll(".tax-info");
+        for (let info of taxInfos) {
+          if (this.checked) {
+            info.style.display = "inline";
+          } else {
+            info.style.display = "none";
+          }
+        }
+      });
+    }
+  });
+</script>

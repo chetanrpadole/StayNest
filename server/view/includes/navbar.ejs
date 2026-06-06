@@ -13,7 +13,18 @@
         <a class="nav-link px-3" href="/listings">All Listings</a>
         <a class="nav-link px-3" href="/listings/new">Add New Listing</a>
       </div>
-      <div class="navbar-nav ms-auto align-items-center gap-2">
+      
+      <!-- Search Form -->
+      <div class="navbar-nav ms-auto mx-md-auto mt-3 mt-md-0">
+        <form class="d-flex search-form" role="search">
+          <input class="form-control me-2 rounded-pill shadow-sm border-1 px-4 search-inp" type="search" placeholder="Search destinations" aria-label="Search" style="width: 300px; font-size: 0.95rem; border-color: #e0e0e0;">
+          <button class="btn btn-danger rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm" type="submit" style="width: 40px; height: 40px; background-color: #fe424d; border-color: #fe424d; flex-shrink: 0;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+
+      <div class="navbar-nav ms-auto align-items-center gap-2 mt-3 mt-md-0">
         <% if (currUser) { %>
           <a class="nav-link btn btn-outline-danger px-4 rounded-pill border-2 fw-semibold mt-2 mt-md-0" href="/listings/new" style="border-color: #fe424d; color: #fe424d;">
             <i class="fa-solid fa-plus me-1"></i> StayNest your home
