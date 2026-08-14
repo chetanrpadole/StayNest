@@ -1,16 +1,12 @@
 import Listing from "../models/listing.js";
 
 export const index = async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
-};
-
-export const renderNewForm = (req, res) => {
-  res.render("listings/new.ejs");
+  const allListings = await Listing.find({}).populate("owner");
+  res.json({ success: true, listings: allListings });
 };
 
 export const showListing = async (req, res) => {
-  let { id } = req.params;
+  const { id } = req.params;
   const listing = await Listing.findById(id)
     .populate({
       path: "reviews",
@@ -19,15 +15,15 @@ export const showListing = async (req, res) => {
       },
     })
     .populate("owner");
+
   if (!listing) {
-    req.flash("error", "Listing you requested for does not exist!");
-    return res.redirect("/listings");
+    return res.status(404).json({ success: false, message: "Listing not found" });
   }
-  res.render("listings/show.ejs", { listing });
+  res.json({ success: true, listing });
 };
 
 export const createListing = async (req, res) => {
-  let newListing = new Listing(req.body.listing);
+  const newListing = new Listing(req.body.listing || req.body);
   newListing.owner = req.user._id;
 
   // If an image file was uploaded via multer/Cloudinary
@@ -39,23 +35,25 @@ export const createListing = async (req, res) => {
   }
 
   await newListing.save();
-  req.flash("success", "New listing created successfully!");
-  res.redirect("/listings");
-};
-
-export const renderEditForm = async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id);
-  if (!listing) {
-    req.flash("error", "Listing you requested for does not exist!");
-    return res.redirect("/listings");
-  }
-  res.render("listings/edit.ejs", { listing });
+  const populated = await Listing.findById(newListing._id).populate("owner");
+  res.status(201).json({
+    success: true,
+    message: "New listing created successfully!",
+    listing: populated,
+  });
 };
 
 export const updateListing = async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  const { id } = req.params;
+  const listing = await Listing.findByIdAndUpdate(
+    id,
+    { ...(req.body.listing || req.body) },
+    { new: true }
+  );
+
+  if (!listing) {
+    return res.status(404).json({ success: false, message: "Listing not found" });
+  }
 
   // If a new image file was uploaded, update the image field
   if (req.file) {
@@ -66,13 +64,19 @@ export const updateListing = async (req, res) => {
     await listing.save();
   }
 
-  req.flash("success", "Listing updated successfully!");
-  res.redirect(`/listings/${id}`);
+  const updated = await Listing.findById(id).populate("owner");
+  res.json({
+    success: true,
+    message: "Listing updated successfully!",
+    listing: updated,
+  });
 };
 
 export const destroyListing = async (req, res) => {
-  let { id } = req.params;
-  await Listing.findByIdAndDelete(id);
-  req.flash("success", "Listing deleted successfully!");
-  res.redirect("/listings");
+  const { id } = req.params;
+  const deleted = await Listing.findByIdAndDelete(id);
+  if (!deleted) {
+    return res.status(404).json({ success: false, message: "Listing not found" });
+  }
+  res.json({ success: true, message: "Listing deleted successfully!" });
 };

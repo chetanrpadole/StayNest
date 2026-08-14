@@ -12,11 +12,21 @@ const upload = multer({ storage });
 
 // Joi validation middleware
 const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
+  // Since request body might contain nested listing object or be flat, Joi schema check:
+  // Joi schema currently expects { listing: { title, ... } }
+  let dataToValidate = req.body;
+  if (!req.body.listing && req.body.title) {
+    dataToValidate = { listing: req.body };
+  }
+  let { error } = listingSchema.validate(dataToValidate);
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(400, errMsg);
   } else {
+    // If it was flat, let's restructure it to be consistent with controller
+    if (!req.body.listing && req.body.title) {
+      req.body.listing = req.body;
+    }
     next();
   }
 };
@@ -24,18 +34,12 @@ const validateListing = (req, res, next) => {
 // Listings — Index Route & Create Route
 router.route("/")
   .get(wrapAsync(listingController.index))
-  .post(isLoggedIn, upload.single("listing[image]"), validateListing, wrapAsync(listingController.createListing));
-
-// Listings — New Route (Form)
-router.get("/new", isLoggedIn, listingController.renderNewForm);
+  .post(isLoggedIn, upload.single("image"), validateListing, wrapAsync(listingController.createListing));
 
 // Listings — Show Route, Update Route & Delete Route
 router.route("/:id")
   .get(wrapAsync(listingController.showListing))
-  .put(isLoggedIn, isOwner, upload.single("listing[image]"), validateListing, wrapAsync(listingController.updateListing))
+  .put(isLoggedIn, isOwner, upload.single("image"), validateListing, wrapAsync(listingController.updateListing))
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
-
-// Listings — Edit Route (Form)
-router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 
 export default router;

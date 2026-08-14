@@ -1,43 +1,57 @@
 import User from "../models/user.js";
-
-export const renderSignupForm = (req, res) => {
-  res.render("users/signup.ejs");
-};
+import { generateToken } from "../utils/generateToken.js";
 
 export const signup = async (req, res, next) => {
   try {
-    let { username, password } = req.body;
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ success: false, message: "Username and password are required" });
+    }
     const newUser = new User({ username });
     const registeredUser = await User.register(newUser, password);
-    req.login(registeredUser, (err) => {
-      if (err) {
-        return next(err);
-      }
-      req.flash("success", "Welcome to StayNest!");
-      res.redirect("/listings");
+    const token = generateToken(registeredUser);
+    res.status(201).json({
+      success: true,
+      message: "Welcome to StayNest!",
+      token,
+      user: { id: registeredUser._id, username: registeredUser.username },
     });
   } catch (e) {
-    req.flash("error", e.message);
-    res.redirect("/signup");
+    res.status(400).json({ success: false, message: e.message });
   }
 };
 
-export const renderLoginForm = (req, res) => {
-  res.render("users/login.ejs");
-};
-
-export const login = (req, res) => {
-  req.flash("success", "Welcome back to StayNest!");
-  let redirectUrl = res.locals.redirectUrl || "/listings";
-  res.redirect(redirectUrl);
-};
-
-export const logout = (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
+export const login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ success: false, message: "Username and password are required" });
     }
-    req.flash("success", "You are logged out!");
-    res.redirect("/listings");
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ success: false, message: "Invalid username or password" });
+    }
+
+    const { user: authenticatedUser } = await user.authenticate(password);
+    if (!authenticatedUser) {
+      return res.status(401).json({ success: false, message: "Invalid username or password" });
+    }
+
+    const token = generateToken(authenticatedUser);
+    res.json({
+      success: true,
+      message: "Welcome back to StayNest!",
+      token,
+      user: { id: authenticatedUser._id, username: authenticatedUser.username },
+    });
+  } catch (e) {
+    res.status(401).json({ success: false, message: "Invalid username or password" });
+  }
+};
+
+export const getCurrentUser = async (req, res) => {
+  res.json({
+    success: true,
+    user: { id: req.user._id, username: req.user.username },
   });
 };

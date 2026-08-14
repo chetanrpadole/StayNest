@@ -3,15 +3,26 @@ import Review from "../models/review.js";
 
 export const createReview = async (req, res) => {
   let listing = await Listing.findById(req.params.id);
-  let newReview = new Review(req.body.review);
+  if (!listing) {
+    return res.status(404).json({ success: false, message: "Listing not found" });
+  }
+  
+  let newReview = new Review(req.body.review || req.body);
   newReview.author = req.user._id;
   
   listing.reviews.push(newReview);
   
   await newReview.save();
   await listing.save();
-  req.flash("success", "New review posted successfully!");
-  res.redirect(`/listings/${listing._id}`);
+  
+  // Populate the author so the frontend gets it immediately
+  const populatedReview = await Review.findById(newReview._id).populate("author");
+  
+  res.status(201).json({
+    success: true,
+    message: "New review posted successfully!",
+    review: populatedReview
+  });
 };
 
 export const destroyReview = async (req, res) => {
@@ -19,6 +30,9 @@ export const destroyReview = async (req, res) => {
   
   await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
   await Review.findByIdAndDelete(reviewId);
-  req.flash("success", "Review deleted successfully!");
-  res.redirect(`/listings/${id}`);
+  
+  res.json({
+    success: true,
+    message: "Review deleted successfully!"
+  });
 };

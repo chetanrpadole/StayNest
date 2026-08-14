@@ -9,11 +9,18 @@ const router = express.Router({ mergeParams: true });
 
 // Joi validation middleware
 const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
+  let dataToValidate = req.body;
+  if (!req.body.review && req.body.comment) {
+    dataToValidate = { review: req.body };
+  }
+  let { error } = reviewSchema.validate(dataToValidate);
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(400, errMsg);
   } else {
+    if (!req.body.review && req.body.comment) {
+      req.body.review = req.body;
+    }
     next();
   }
 };

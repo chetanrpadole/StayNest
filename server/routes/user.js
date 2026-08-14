@@ -1,27 +1,17 @@
 import express from "express";
-import passport from "passport";
 import wrapAsync from "../utils/wrapAsync.js";
-import { saveRedirectUrl } from "../middleware.js";
 import * as userController from "../controller/users.js";
+import { isLoggedIn } from "../middleware.js";
 
 const router = express.Router();
 
-router.route("/signup")
-  .get(userController.renderSignupForm)
-  .post(wrapAsync(userController.signup));
+// Signup Route
+router.post("/signup", wrapAsync(userController.signup));
 
-router.route("/login")
-  .get(userController.renderLoginForm)
-  .post(
-    saveRedirectUrl,
-    passport.authenticate("local", {
-      failureRedirect: "/login",
-      failureFlash: true,
-    }),
-    userController.login
-  );
+// Login Route
+router.post("/login", wrapAsync(userController.login));
 
-// GET /logout — log out user
-router.get("/logout", userController.logout);
+// Get current user route (to verify JWT tokens)
+router.get("/me", isLoggedIn, wrapAsync(userController.getCurrentUser));
 
 export default router;
