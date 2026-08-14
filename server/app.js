@@ -73,7 +73,7 @@ async function main() {
 }
 
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.render("home.ejs");
 });
 
 // Mount Routers

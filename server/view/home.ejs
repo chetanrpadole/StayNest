@@ -1,0 +1,111 @@
+<% layout('layouts/boilerplate') -%>
+
+<!-- Hero Section -->
+<div class="hero-section position-relative overflow-hidden rounded-4 mb-5 shadow-lg mt-3" style="min-height: 80vh; background: url('https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2070') center/cover no-repeat;">
+    <!-- Overlay for text readability -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));"></div>
+    
+    <div class="container h-100 d-flex flex-column justify-content-center align-items-center position-relative z-1 text-white text-center" style="min-height: 80vh;">
+        <h1 class="display-3 fw-bold mb-4 slide-up-animation" style="text-shadow: 0 4px 12px rgba(0,0,0,0.3); font-family: 'Inter', sans-serif;">Find your next perfect stay</h1>
+        <p class="fs-4 mb-5 slide-up-animation delay-1" style="max-width: 600px; text-shadow: 0 2px 8px rgba(0,0,0,0.3);">Discover extraordinary homes, cabins, and castles for your next unforgettable adventure.</p>
+        
+        <!-- Search Bar Simulation -->
+        <div class="bg-white p-2 rounded-pill shadow-lg d-flex align-items-center w-100 slide-up-animation delay-2" style="max-width: 600px;">
+            <div class="flex-grow-1 px-3 d-flex align-items-center border-end">
+                <i class="fa-solid fa-location-dot text-danger me-2"></i>
+                <input type="text" class="form-control border-0 shadow-none bg-transparent" placeholder="Where are you going?" style="font-weight: 500;">
+            </div>
+            <a href="/listings" class="btn btn-danger rounded-pill px-4 py-2 ms-2 fw-bold d-flex align-items-center gap-2" style="background-color: #fe424d; border-color: #fe424d;">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5 py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold display-5 mb-3" style="color: #222;">Why choose StayNest?</h2>
+        <p class="text-secondary fs-5">Experience hospitality redefined with our premium benefits.</p>
+    </div>
+    
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="feature-card p-4 rounded-4 bg-light h-100 text-center border-0 shadow-sm">
+                <div class="icon-wrapper bg-white rounded-circle d-inline-flex justify-content-center align-items-center shadow-sm mb-4" style="width: 80px; height: 80px;">
+                    <i class="fa-solid fa-shield-halved fs-1 text-danger"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Secure Booking</h4>
+                <p class="text-secondary">Your payments and personal data are protected with industry-leading encryption and security standards.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card p-4 rounded-4 bg-light h-100 text-center border-0 shadow-sm">
+                <div class="icon-wrapper bg-white rounded-circle d-inline-flex justify-content-center align-items-center shadow-sm mb-4" style="width: 80px; height: 80px;">
+                    <i class="fa-solid fa-headset fs-1 text-danger"></i>
+                </div>
+                <h4 class="fw-bold mb-3">24/7 Support</h4>
+                <p class="text-secondary">Our dedicated team is available around the clock to assist you with any questions or concerns during your stay.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card p-4 rounded-4 bg-light h-100 text-center border-0 shadow-sm">
+                <div class="icon-wrapper bg-white rounded-circle d-inline-flex justify-content-center align-items-center shadow-sm mb-4" style="width: 80px; height: 80px;">
+                    <i class="fa-solid fa-map-location-dot fs-1 text-danger"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Unique Locations</h4>
+                <p class="text-secondary">From treehouses to castles, discover unique accommodations you won't find anywhere else.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to action -->
+<div class="bg-dark text-white rounded-4 p-5 mb-5 d-flex flex-column flex-md-row justify-content-between align-items-center shadow-lg position-relative overflow-hidden">
+    <div class="position-absolute top-0 end-0 opacity-25" style="transform: translate(20%, -20%);">
+        <i class="fa-solid fa-compass" style="font-size: 20rem; color: #fe424d;"></i>
+    </div>
+    <div class="z-1 mb-4 mb-md-0 position-relative">
+        <h2 class="fw-bold display-6 mb-2">Ready to host?</h2>
+        <p class="fs-5 text-light opacity-75 mb-0">Turn your extra space into extra income with StayNest.</p>
+    </div>
+    <div class="z-1 position-relative">
+        <a href="/listings/new" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold text-danger fs-5 shadow">Become a Host</a>
+    </div>
+</div>
+
+<style>
+    .slide-up-animation {
+        animation: slideUp 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    
+    @keyframes slideUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+    
+    .icon-wrapper {
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .feature-card:hover .icon-wrapper {
+        transform: scale(1.1) rotate(5deg);
+        background-color: #fe424d !important;
+    }
+    .feature-card:hover .icon-wrapper i {
+        color: white !important;
+    }
+</style>
