@@ -64,8 +64,8 @@ main()
 async function main() {
   await mongoose.connect(MONGO_URL);
 }
-
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`StayNest API is listening on port ${PORT}`);
 });
