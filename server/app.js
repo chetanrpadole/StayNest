@@ -1,6 +1,10 @@
 import "dotenv/config";
+import dns from "node:dns";
 import express from "express";
 import mongoose from "mongoose";
+
+// Use Google's public DNS to resolve MongoDB Atlas SRV records
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 import cors from "cors";
 import ExpressError from "./utils/ExpressErrors.js";
 
@@ -52,20 +56,20 @@ app.use((err, req, res, next) => {
 });
 
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/majorproject";
-
-main()
-  .then(() => {
-    console.log("Connected to DB");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-async function main() {
-  await mongoose.connect(MONGO_URL);
-}
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`StayNest API is listening on port ${PORT}`);
-});
+async function main() {
+  try {
+    await mongoose.connect(MONGO_URL);
+    console.log("Connected to MongoDB");
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`StayNest API is listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err.message);
+    process.exit(1);
+  }
+}
+
+main();
