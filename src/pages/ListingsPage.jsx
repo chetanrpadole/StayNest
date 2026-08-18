@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import API from "../api/axios";
 import ListingCard from "../components/ListingCard";
+import { FALLBACK_LISTINGS } from "../data/mockListings";
 
 const FILTER_ITEMS = [
   { id: "trending", label: "Trending", icon: "fa-fire" },
@@ -33,13 +34,14 @@ const ListingsPage = () => {
       try {
         setLoading(true);
         const response = await API.get("/listings");
-        if (response.data.success) {
+        if (response.data?.success && response.data?.listings?.length > 0) {
           setListings(response.data.listings);
         } else {
-          setError(response.data.message || "Failed to load listings");
+          setListings(FALLBACK_LISTINGS);
         }
       } catch (err) {
-        setError(err.response?.data?.message || "Something went wrong while fetching listings.");
+        console.warn("Backend API not reachable, loading fallback demo listings:", err.message);
+        setListings(FALLBACK_LISTINGS);
       } finally {
         setLoading(false);
       }

@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useFlash } from "../context/FlashContext";
 import API from "../api/axios";
 import StarRating from "../components/StarRating";
+import { FALLBACK_LISTINGS } from "../data/mockListings";
 
 const ListingDetailPage = () => {
   const { id } = useParams();
@@ -25,13 +26,16 @@ const ListingDetailPage = () => {
       try {
         setLoading(true);
         const response = await API.get(`/listings/${id}`);
-        if (response.data.success) {
+        if (response.data?.success && response.data?.listing) {
           setListing(response.data.listing);
         } else {
-          setError(response.data.message || "Failed to load listing");
+          const fallback = FALLBACK_LISTINGS.find((l) => l._id === id) || FALLBACK_LISTINGS[0];
+          setListing(fallback);
         }
       } catch (err) {
-        setError(err.response?.data?.message || "Failed to load listing details.");
+        console.warn("Backend API not reachable, loading fallback listing:", err.message);
+        const fallback = FALLBACK_LISTINGS.find((l) => l._id === id) || FALLBACK_LISTINGS[0];
+        setListing(fallback);
       } finally {
         setLoading(false);
       }
