@@ -40,9 +40,10 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-md-6 col-lg-5">
-        <div className="card shadow-sm border-0" style={{ borderRadius: "16px" }}>
+    <div className="container px-3 px-md-4">
+      <div className="row justify-content-center mt-4 mt-md-5">
+        <div className="col-12 col-md-6 col-lg-5">
+          <div className="card shadow-sm border-0" style={{ borderRadius: "16px" }}>
           <div className="card-body p-4">
             <h3 className="text-center fw-bold mb-1">
               <i className="fa-solid fa-user-plus me-2" style={{ color: "#fe424d" }}></i>Sign Up
@@ -103,6 +104,7 @@ const SignupPage = () => {
                 Login
               </Link>
             </p>
+            </div>
           </div>
         </div>
       </div>

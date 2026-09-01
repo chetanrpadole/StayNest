@@ -450,3 +450,52 @@ a {
 .hover-scale:hover {
   transform: scale(1.02);
 }
+
+/* ===== Mobile Responsiveness ===== */
+
+/* Navbar: restore fixed search width only on medium+ screens */
+@media (min-width: 768px) {
+  .search-inp {
+    width: 260px;
+  }
+}
+
+/* Hero: reduce height on small screens */
+@media (max-width: 575.98px) {
+  .hero-section {
+    min-height: 60vh !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* Show Listing: tighter body padding on mobile */
+@media (max-width: 575.98px) {
+  .show-listing-body {
+    padding: 18px 16px 16px;
+  }
+  .show-listing-title {
+    font-size: 1.35rem;
+  }
+  .show-action-btns {
+    flex-direction: column;
+  }
+  .btn-show-action {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Review form: remove horizontal overflow on very small screens */
+@media (max-width: 575.98px) {
+  .review-form-card {
+    padding: 18px 16px;
+  }
+}
+
+/* ListingsPage: ensure container doesn't overflow */
+@media (max-width: 767.98px) {
+  .tax-toggle-box {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -48,25 +48,24 @@ const Navbar = ({ onSearch }) => {
           </div>
 
           {/* Search Form */}
-          <div className="navbar-nav ms-auto mx-md-auto mt-3 mt-md-0">
-            <form className="d-flex search-form" onSubmit={handleSearchSubmit}>
+          <div className="navbar-nav ms-auto mx-md-auto mt-3 mt-md-0 w-100 w-md-auto">
+            <form className="d-flex search-form w-100" onSubmit={handleSearchSubmit}>
               <input
                 name="search"
                 className="form-control me-2 rounded-pill shadow-sm border-1 px-4 search-inp"
                 type="search"
                 placeholder="Search destinations"
                 aria-label="Search"
-                style={{ width: "300px", fontSize: "0.95rem", borderColor: "#e0e0e0" }}
+                style={{ fontSize: "0.95rem", borderColor: "#e0e0e0" }}
               />
               <button
-                className="btn btn-danger rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm"
+                className="btn btn-danger rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm flex-shrink-0"
                 type="submit"
                 style={{
                   width: "40px",
                   height: "40px",
                   backgroundColor: "#fe424d",
                   borderColor: "#fe424d",
-                  flexShrink: 0,
                 }}
               >
                 <i className="fa-solid fa-magnifying-glass"></i>
@@ -74,11 +73,11 @@ const Navbar = ({ onSearch }) => {
             </form>
           </div>
 
-          <div className="navbar-nav ms-auto align-items-center gap-2 mt-3 mt-md-0">
+          <div className="navbar-nav ms-md-auto align-items-start align-items-md-center gap-2 mt-3 mt-md-0">
             {user ? (
               <>
                 <Link
-                  className="nav-link btn btn-outline-danger px-4 rounded-pill border-2 fw-semibold mt-2 mt-md-0"
+                  className="nav-link btn btn-outline-danger px-4 rounded-pill border-2 fw-semibold"
                   to="/listings/new"
                   style={{ borderColor: "#fe424d", color: "#fe424d" }}
                 >
@@ -97,7 +96,7 @@ const Navbar = ({ onSearch }) => {
               <>
                 <Link className="nav-link px-3 fw-semibold" to="/signup">Sign Up</Link>
                 <Link
-                  className="nav-link btn btn-outline-danger px-4 rounded-pill border-2 fw-semibold mt-2 mt-md-0"
+                  className="nav-link btn btn-outline-danger px-4 rounded-pill border-2 fw-semibold"
                   to="/login"
                   style={{ borderColor: "#fe424d", color: "#fe424d" }}
                 >

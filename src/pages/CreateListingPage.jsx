@@ -78,9 +78,10 @@ const CreateListingPage = () => {
   };
 
   return (
-    <div className="row mt-3">
-      <div className="col-md-8 offset-md-2">
-        <h3 className="fw-bold mb-4">Create a New Listing</h3>
+    <div className="container px-3 px-md-4">
+      <div className="row mt-3">
+        <div className="col-12 col-md-8 offset-md-2">
+          <h3 className="fw-bold mb-4">Create a New Listing</h3>
         <form
           onSubmit={handleSubmit}
           className={`needs-validation ${validated ? "was-validated" : ""}`}
@@ -135,7 +136,7 @@ const CreateListingPage = () => {
 
           <div className="row">
             {/* Price */}
-            <div className="mb-3 col-md-4">
+            <div className="mb-3 col-12 col-md-4">
               <label htmlFor="price" className="form-label fw-semibold">Price (₹)</label>
               <input
                 type="number"
@@ -153,7 +154,7 @@ const CreateListingPage = () => {
             </div>
 
             {/* Location */}
-            <div className="mb-3 col-md-4">
+            <div className="mb-3 col-12 col-md-4">
               <label htmlFor="location" className="form-label fw-semibold">Location</label>
               <input
                 type="text"
@@ -170,7 +171,7 @@ const CreateListingPage = () => {
             </div>
 
             {/* Country */}
-            <div className="mb-3 col-md-4">
+            <div className="mb-3 col-12 col-md-4">
               <label htmlFor="country" className="form-label fw-semibold">Country</label>
               <input
                 type="text"
@@ -197,7 +198,7 @@ const CreateListingPage = () => {
           </button>
         </form>
         <br />
-        <br />
+        </div>
       </div>
     </div>
   );

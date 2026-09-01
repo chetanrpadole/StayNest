@@ -20,7 +20,7 @@ const HomePage = () => {
       <div
         className="hero-section position-relative overflow-hidden rounded-4 mb-5 shadow-lg mt-3"
         style={{
-          minHeight: "80vh",
+          minHeight: "70vh",
           background: "url('https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2070') center/cover no-repeat",
         }}
       >
@@ -35,41 +35,42 @@ const HomePage = () => {
           style={{ minHeight: "80vh" }}
         >
           <h1
-            className="display-3 fw-bold mb-4 slide-up-animation"
+            className="display-4 display-md-3 fw-bold mb-3 slide-up-animation"
             style={{ textShadow: "0 4px 12px rgba(0,0,0,0.3)", fontFamily: "'Inter', sans-serif" }}
           >
             Find your next perfect stay
           </h1>
           <p
-            className="fs-4 mb-5 slide-up-animation delay-1"
+            className="fs-5 mb-4 slide-up-animation delay-1 px-2"
             style={{ maxWidth: "600px", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
           >
             Discover extraordinary homes, cabins, and castles for your next unforgettable adventure.
           </p>
 
-          {/* Search Bar Simulation */}
+          {/* Search Bar */}
           <form
             onSubmit={handleSearchSubmit}
             className="bg-white p-2 rounded-pill shadow-lg d-flex align-items-center w-100 slide-up-animation delay-2"
             style={{ maxWidth: "600px" }}
           >
-            <div className="flex-grow-1 px-3 d-flex align-items-center border-end">
-              <i className="fa-solid fa-location-dot text-danger me-2"></i>
+            <div className="flex-grow-1 px-2 px-md-3 d-flex align-items-center border-end overflow-hidden">
+              <i className="fa-solid fa-location-dot text-danger me-2 flex-shrink-0"></i>
               <input
                 type="text"
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
                 className="form-control border-0 shadow-none bg-transparent"
                 placeholder="Where are you going?"
-                style={{ fontWeight: 500 }}
+                style={{ fontWeight: 500, minWidth: 0 }}
               />
             </div>
             <button
               type="submit"
-              className="btn btn-danger rounded-pill px-4 py-2 ms-2 fw-bold d-flex align-items-center gap-2"
-              style={{ backgroundColor: "#fe424d", borderColor: "#fe424d" }}
+              className="btn btn-danger rounded-pill px-3 px-md-4 py-2 ms-2 fw-bold d-flex align-items-center gap-2 flex-shrink-0"
+              style={{ backgroundColor: "#fe424d", borderColor: "#fe424d", whiteSpace: "nowrap" }}
             >
-              <i className="fa-solid fa-magnifying-glass"></i> Search
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <span className="d-none d-sm-inline">Search</span>
             </button>
           </form>
         </div>
@@ -129,11 +130,11 @@ const HomePage = () => {
       </div>
 
       {/* Call to action */}
-      <div className="bg-dark text-white rounded-4 p-5 mb-5 d-flex flex-column flex-md-row justify-content-between align-items-center shadow-lg position-relative overflow-hidden">
+      <div className="bg-dark text-white rounded-4 p-4 p-md-5 mb-5 d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start shadow-lg position-relative overflow-hidden gap-4">
         <div className="position-absolute top-0 end-0 opacity-25" style={{ transform: "translate(20%, -20%)" }}>
           <i className="fa-solid fa-compass" style={{ fontSize: "20rem", color: "#fe424d" }}></i>
         </div>
-        <div className="z-1 mb-4 mb-md-0 position-relative">
+        <div className="z-1 position-relative">
           <h2 className="fw-bold display-6 mb-2">Ready to host?</h2>
           <p className="fs-5 text-light opacity-75 mb-0">Turn your extra space into extra income with StayNest.</p>
         </div>
