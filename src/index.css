@@ -453,8 +453,8 @@ a {
 
 /* ===== Mobile Responsiveness ===== */
 
-/* Navbar: restore fixed search width only on medium+ screens */
-@media (min-width: 768px) {
+/* Navbar: restore fixed search width only on large+ screens */
+@media (min-width: 992px) {
   .search-inp {
     width: 260px;
   }

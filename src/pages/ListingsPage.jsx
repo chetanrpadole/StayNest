@@ -187,14 +187,41 @@ const ListingsPage = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-5 my-5 border rounded-4 bg-white shadow-sm">
-          <i className="fa-solid fa-hotel fs-1 text-muted mb-3"></i>
-          <h4 className="fw-bold">No stays found</h4>
-          <p className="text-secondary">Try adjusting your filters or search keywords.</p>
-          {searchQuery && (
-            <Link to="/listings" className="btn btn-danger rounded-pill px-4 mt-2" style={{ backgroundColor: "#fe424d" }}>
-              Clear Search
-            </Link>
+        <div
+          className="text-center py-5 my-4 rounded-4 bg-white shadow-sm"
+          style={{ border: "1.5px dashed #e0e0e0" }}
+        >
+          <div
+            className="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+            style={{ width: 72, height: 72, background: "#fff3f3" }}
+          >
+            <i className="fa-solid fa-magnifying-glass fs-2" style={{ color: "#fe424d" }}></i>
+          </div>
+          <h4 className="fw-bold mb-1">No listings found</h4>
+          {searchQuery ? (
+            <>
+              <p className="text-secondary mb-3">
+                No results for{" "}
+                <span className="fw-semibold text-dark">&ldquo;{searchQuery}&rdquo;</span>.
+                <br />
+                Try a different title or location.
+              </p>
+              <Link
+                to="/listings"
+                className="btn rounded-pill px-4 fw-semibold"
+                style={{ backgroundColor: "#fe424d", borderColor: "#fe424d", color: "#fff" }}
+              >
+                <i className="fa-solid fa-xmark me-2"></i>Clear Search
+              </Link>
+            </>
+          ) : (
+            <p className="text-secondary mb-0">
+              Try adjusting your filters or{" "}
+              <Link to="/listings" className="text-danger fw-semibold text-decoration-none">
+                browse all listings
+              </Link>
+              .
+            </p>
           )}
         </div>
       )}
